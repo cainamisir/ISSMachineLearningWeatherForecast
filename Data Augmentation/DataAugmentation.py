@@ -30,6 +30,20 @@ for img in imgaray:
     cv2.imwrite( "Augmented/photoFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
     img_flip_ud_lr = cv2.flip(img, -1)
     cv2.imwrite( "Augmented/photoFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
-    imageIndex = imageIndex + 1
+    grayScale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite( "Augmented/Grayscalephoto" + str(imageIndex) + ".jpg", grayScale)
+    img_rotate_90_clockwise = cv2.rotate(grayScale, cv2.ROTATE_90_CLOCKWISE)
+    cv2.imwrite( "Augmented/Grayscalephoto90Clockwise" + str(imageIndex) + ".jpg", img_rotate_90_clockwise)
+    img_rotate_90_counterclockwise = cv2.rotate(grayScale, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    cv2.imwrite( "Augmented/Grayscalephoto90ConterClockwise" + str(imageIndex) + ".jpg", img_rotate_90_counterclockwise)
+    img_rotate_180 = cv2.rotate(grayScale, cv2.ROTATE_180)
+    cv2.imwrite( "Augmented/Grayscalephoto180" + str(imageIndex) + ".jpg", img_rotate_180)
+    img_flip_ud = cv2.flip(grayScale, 0)
+    cv2.imwrite( "Augmented/GrayscalephotoFlipVertical" + str(imageIndex) + ".jpg", img_flip_ud)
+    img_flip_lr = cv2.flip(grayScale, 1)
+    cv2.imwrite( "Augmented/GrayscalephotoFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
+    img_flip_ud_lr = cv2.flip(grayScale, -1)
+    cv2.imwrite( "Augmented/GrayscalephotoFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
 
+    imageIndex = imageIndex + 1
 
