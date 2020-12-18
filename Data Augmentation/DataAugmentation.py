@@ -1,6 +1,19 @@
 import os
 import cv2
+from geopy.geocoders import Nominatim
+geolocator = Nominatim(user_agent="myGeocoder")
 
+
+def getCityCountry(coords): # the type of coords is string
+    # Function that returns a tuple representing the City closest to a group of coordinates
+    location = geolocator.reverse(coords , language = "en")
+    address = location.raw['address']
+    city = address.get('city', '')
+    country = address.get('country', '')
+    return city,country
+
+# example query
+# print(getCityCountry("52.509669, 13.376294"))
 
 def load_images_from_folder(folder):
     images = []
