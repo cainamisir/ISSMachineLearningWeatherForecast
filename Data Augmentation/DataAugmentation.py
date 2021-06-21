@@ -18,7 +18,7 @@ def getCityCountry(lat , lon):
     # Output: a tuple representing the City closest to a group of coordinates
 
     try:
-         location = geolocator.reverse(Point(lon , lat) , language = "en")
+         location = geolocator.reverse(Point(lat , lon) , language = "en")
     except:
         location = None
     if location != None:
@@ -53,13 +53,13 @@ def load_images_from_folder(folder):
                 latitude *= -1
             images.append(img)
             
-            coords.append((longitude, latitude ))
+            coords.append(( latitude,longitude ))
     return images
 def getWeatherData(city, country):
     # Author: Vlad Cainamisir
     # Input:2 strings. format: city and country
     # Output: outputs the hours when it rains
-    response = requests.get("https://www.timeanddate.com/scripts/cityajax.php?n=" + str(country) + "/" + str(city) + "&mode=historic&hd=20200420&month=4&year=2020&json=1") #not really a json
+    response = requests.get("https://www.timeanddate.com/scripts/cityajax.php?n=" + str(country) + "/" + str(city) + "&mode=historic&hd=20210503&month=5&year=2021&json=1") #not really a json
     content = response.content
     start = 0
     end = 0
@@ -83,15 +83,20 @@ def getWeatherData(city, country):
                 
     return rainCnt / hourIndex    
     
-imgaray = load_images_from_folder("Data/zz_bloomers")
+imgaray = load_images_from_folder("Data/zeus")
 imageIndex = 0
 dsize = (128, 128)
 ind = 0
 for img in imgaray:
     directory = ""
     string = str(coords[ind][0]) + ", " + str(coords[ind][1]) 
-    citycountry = getCityCountry(coords[ind][0] , coords[ind][1])
+    try: 
+        citycountry = getCityCountry(coords[ind][0] , coords[ind][1])
+    except:
+        print("oops")
+    print(coords[ind][0] , coords[ind][1])
     print(citycountry)
+    ind += 1
     if(citycountry[0] != ""):
         rainindex = getWeatherData(citycountry[0] , citycountry[1])
         print(rainindex)
@@ -103,36 +108,35 @@ for img in imgaray:
             directory = "/mediumrain/"
         elif rainindex > 0.5:
             directory = "/heavyrain/"
-        ind += 1
         dst = img
         img = cv2.resize(img, (128, 128))
-        cv2.imwrite( "Augmentedrun2" + directory + "/photo" + str(imageIndex) + ".jpg", img)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeus" + str(imageIndex) + ".jpg", img)
         img_rotate_90_clockwise = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photo90Clockwise" + str(imageIndex) + ".jpg", img_rotate_90_clockwise)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeus90Clockwise" + str(imageIndex) + ".jpg", img_rotate_90_clockwise)
         img_rotate_90_counterclockwise = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photo90ConterClockwise" + str(imageIndex) + ".jpg", img_rotate_90_counterclockwise)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeus90ConterClockwise" + str(imageIndex) + ".jpg", img_rotate_90_counterclockwise)
         img_rotate_180 = cv2.rotate(img, cv2.ROTATE_180)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photo180" + str(imageIndex) + ".jpg", img_rotate_180)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeus180" + str(imageIndex) + ".jpg", img_rotate_180)
         img_flip_ud = cv2.flip(img, 0)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photoFlipVertical" + str(imageIndex) + ".jpg", img_flip_ud)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeusFlipVertical" + str(imageIndex) + ".jpg", img_flip_ud)
         img_flip_lr = cv2.flip(img, 1)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photoFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeusFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
         img_flip_ud_lr = cv2.flip(img, -1)
-        cv2.imwrite( "Augmentedrun2" + directory + "/photoFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
+        cv2.imwrite( "Augmentedrun3" + directory + "/photoZeusFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
         grayScale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite( "Augmentedrun2" + directory + "/Grayscalephoto" + str(imageIndex) + ".jpg", grayScale)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeus" + str(imageIndex) + ".jpg", grayScale)
         img_rotate_90_clockwise = cv2.rotate(grayScale, cv2.ROTATE_90_CLOCKWISE)
-        cv2.imwrite( "Augmentedrun2" + directory + "/Grayscalephoto90Clockwise" + str(imageIndex) + ".jpg", img_rotate_90_clockwise)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeus90Clockwise" + str(imageIndex) + ".jpg", img_rotate_90_clockwise)
         img_rotate_90_counterclockwise = cv2.rotate(grayScale, cv2.ROTATE_90_COUNTERCLOCKWISE)
-        cv2.imwrite( "Augmentedrun2" + directory + "/Grayscalephoto90ConterClockwise" + str(imageIndex) + ".jpg", img_rotate_90_counterclockwise)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeus90ConterClockwise" + str(imageIndex) + ".jpg", img_rotate_90_counterclockwise)
         img_rotate_180 = cv2.rotate(grayScale, cv2.ROTATE_180)
-        cv2.imwrite( "Augmentedrun2" + directory + "/Grayscalephoto180" + str(imageIndex) + ".jpg", img_rotate_180)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeus180" + str(imageIndex) + ".jpg", img_rotate_180)
         img_flip_ud = cv2.flip(grayScale, 0)
-        cv2.imwrite( "Augmentedrun2" + directory + "/GrayscalephotoFlipVertical" + str(imageIndex) + ".jpg", img_flip_ud)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeusFlipVertical" + str(imageIndex) + ".jpg", img_flip_ud)
         img_flip_lr = cv2.flip(grayScale, 1)
-        cv2.imwrite( "Augmentedrun2" + directory + "/GrayscalephotoFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeusFlipHorizontal" + str(imageIndex) + ".jpg", img_flip_lr)
         img_flip_ud_lr = cv2.flip(grayScale, -1)
-        cv2.imwrite( "Augmentedrun2" + directory + "/GrayscalephotoFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
+        cv2.imwrite( "Augmentedrun3" + directory + "/GrayscalephotoZeusFlipBoth" + str(imageIndex) + ".jpg", img_flip_ud_lr)
 
         imageIndex = imageIndex + 1
 

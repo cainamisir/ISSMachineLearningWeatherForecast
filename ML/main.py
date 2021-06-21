@@ -3,12 +3,20 @@ import numpy as np
 import os
 import PIL
 import tensorflow as tf
-
+import discord
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-
+import urllib
 import pathlib
+from datetime import datetime
+now = datetime.now()
+
+client = discord.Client()
+class AppURLopener(urllib.request.FancyURLopener):
+    version = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.69 Safari/537.36"
+urllib._urlopener = AppURLopener()
+
 dataset_url = "https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz"
 data_dir = tf.keras.utils.get_file('flower_photos', origin=dataset_url, untar=True)
 data_dir = pathlib.Path(data_dir)
@@ -34,6 +42,7 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
   seed=123,
   image_size=(img_height, img_width),
   batch_size=batch_size)
+class_names = train_ds.class_names
 
 AUTOTUNE = tf.data.AUTOTUNE
 
@@ -67,7 +76,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-epochs=10
+epochs=15
 history = model.fit(
   train_ds,
   validation_data=val_ds,
@@ -94,4 +103,28 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.show()
+
+i = 0
+@client.event
+async def on_ready():
+  print('Logat ca {0.user}'.format(client))
+
+@client.event
+async def on_message(message):
+  if message.author == client.user:
+    return
+  print(message.content , message.attachments[0].url)
+  
+  if message.attachments[0].url:
+    current_time = now.strftime("%H%M%S")
+    urllib._urlopener.retrieve(message.attachments[0].url, "photo" + str(current_time) + ".png" )
+    img = keras.preprocessing.image.load_img(
+       "D:/Projects/Astro/" + "photo" + str(current_time) + ".png", target_size=(img_height, img_width)      )
+    img_array = keras.preprocessing.image.img_to_array(img)
+    img_array = tf.expand_dims(img_array, 0) # Create a batch
+    predictions = model.predict(img_array)
+    score = tf.nn.softmax(predictions[0])
+    print(class_names[np.argmax(score)])
+    await message.channel.send(class_names[np.argmax(score)])
+
+client.run('ODU2NTQ2NzQxMjI1MjU5MDU4.YNCnUA.G_Hkebi5ALiFzFVIV7vP0YFomR8')
