@@ -104,6 +104,7 @@ plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 
+#Discord bot implementation that the team used in order to test the classifying ability of the ML program by sending a picture and receiving it's predicted category
 i = 0
 @client.event
 async def on_ready():
