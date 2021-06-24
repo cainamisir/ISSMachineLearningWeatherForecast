@@ -1,10 +1,12 @@
 # Zeus ML
-##### Machine Learning based weather forecast tool using historical data and photos from the ISS taken duting the AstroPI project
+##### Machine Learning based weather forecast tool using historical data and photos from the ISS taken during the AstroPI project, using Tensorflow and Keras
+The Tensorflow reccomended implementation for image classification was used in this project.
 #
 #### How to set up
-Create a folder with your training data and specify the path where the *load_images_from_folder* function is called. Create another one named "Augmented". This is where the augmented dataset will be found after running the program.
-#### Changing the training data resolution
-You can manually set the resolution of the images from the dataset by changing the "dsize" tuple.
+Install all the required libraries, then insert the data in Users/User/.keras/ , structured as folders
+
+#### Changing t
+
  
 
 
