@@ -5,7 +5,6 @@ The Tensorflow reccomended implementation for image classification was used in t
 #### How to set up
 Install all the required libraries, then insert the data in Users/User/.keras/ , structured as folders
 
-#### Changing t
 
  
 
