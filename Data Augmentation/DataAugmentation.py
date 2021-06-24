@@ -1,3 +1,5 @@
+# Early version of the data augmentation program
+
 import os
 import cv2
 from geopy.geocoders import Nominatim
